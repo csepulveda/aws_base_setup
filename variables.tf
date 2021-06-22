@@ -6,5 +6,4 @@ variable "region" {
 variable "primary_domain_name" {
   type    = string
   default = "csepulveda.io"
-
 }
