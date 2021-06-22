@@ -1,6 +1,6 @@
 
 resource "aws_route53_zone" "primary" {
-  name = "csepulveda.io"
+  name = var.primary_domain_name
 }
 
 output "prymary_dns_registers" {
