@@ -8,9 +8,6 @@ on:
   
 jobs:
   terraform:
-    defaults:
-      run:
-        working-directory: eks
     name: "Terraform"
     runs-on: ubuntu-latest
     steps:
