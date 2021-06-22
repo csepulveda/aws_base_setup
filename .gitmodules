@@ -1,0 +1,3 @@
+[submodule "themes/nice-blog"]
+	path = themes/nice-blog
+	url = https://github.com/guilherme-toti/nice-blog
