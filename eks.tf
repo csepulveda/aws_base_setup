@@ -13,7 +13,7 @@ provider "kubernetes" {
 }
 
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
+  source = "terraform-aws-modules/eks/aws"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.20"
