@@ -7,3 +7,8 @@ variable "primary_domain_name" {
   type    = string
   default = "csepulveda.io"
 }
+
+variable "eks_cluster_name" {
+  type    = string
+  default = "cluster1"
+}
