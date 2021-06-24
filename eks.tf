@@ -43,3 +43,7 @@ module "eks" {
 
   write_kubeconfig = false
 }
+
+output "kubectl" {
+  value = "To craete your kubeconfig you must run:\n aws eks --region ${var.region} update-kubeconfig --name ${var.eks_cluster_name}"
+}
