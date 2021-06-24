@@ -12,3 +12,8 @@ variable "eks_cluster_name" {
   type    = string
   default = "cluster1"
 }
+
+variable "eks_autoscaling_role_name" {
+  type    = string
+  default = "cluster-autoscaler-aws"
+}

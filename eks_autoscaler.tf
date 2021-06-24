@@ -1,11 +1,5 @@
 #To allow autoscaling we are going to create five differente resources:
 
-#First create a variable to use as name
-locals {
-  serviceName = "cluster-autoscaler"
-}
-
-
 #First resouce: AWS Autoscaler policy
 #this will allow pods make calls to AWS Autoscaling resources
 resource "aws_iam_policy" "cluster-autoscaler" {
@@ -25,7 +19,7 @@ data "aws_iam_policy_document" "autoscaler_assume_policy" {
       variable = "${replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")}:sub"
 
       values = [
-        "system:serviceaccount:kube-system:${local.serviceName}"
+        "system:serviceaccount:kube-system:${var.eks_autoscaling_role_name}"
       ]
     }
 
@@ -39,28 +33,13 @@ data "aws_iam_policy_document" "autoscaler_assume_policy" {
 #Third resouce: AWS Role
 #this will create a role and attach our previous IAM Policy and Trust relationships
 resource "aws_iam_role" "autoscaler_role" {
-  name                = local.serviceName
+  name                = var.eks_autoscaling_role_name
   path                = "/"
   assume_role_policy  = data.aws_iam_policy_document.autoscaler_assume_policy.json
   managed_policy_arns = [aws_iam_policy.cluster-autoscaler.arn]
 }
 
-# #Fourth resouce: k8s serviceaccount
-# #this will create a serviceaccount in out k8s cluster.
-# #now any pod attached to this service account will have permissions to use any policy attached to our Autoscaling Role
-# resource "kubernetes_service_account" "autoscaler_serviceaccount" {
-#   automount_service_account_token = true
-#   metadata {
-#     name      = local.serviceName
-#     namespace = "kube-system"
-
-#     annotations = {
-#       "eks.amazonaws.com/role-arn" = aws_iam_role.autoscaler_role.arn
-#     }
-#   }
-# }
-
-#Fifth resource: k8s cluster-autoscaler
+#Fourth resource: k8s cluster-autoscaler
 #this helm chart will install the cluster-autoscaler service
 resource "helm_release" "cluster-autoscaler" {
   name       = "cluster-autoscaler"
@@ -77,7 +56,11 @@ resource "helm_release" "cluster-autoscaler" {
     value = var.region
   }
   set {
-    name  = "rbac.serviceAccount.annotations.\"eks.amazonaws.com/role-arn\""
+    name  = "rbac.serviceAccount.name"
+    value = var.eks_autoscaling_role_name
+  }
+  set {
+    name  = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = aws_iam_role.autoscaler_role.arn
   }
 }
