@@ -25,8 +25,8 @@ module "eks" {
   worker_groups = [
     {
       instance_type = "t3.medium"
-      asg_max_size  = 0 #this must be 10, but now its 0 to shutdown the instances
-      asg_min_size  = 0 #this must be 1, but now its 0 to shutdown the instances
+      asg_max_size  = 10 #this must be 10, but now its 0 to shutdown the instances
+      asg_min_size  = 1  #this must be 1, but now its 0 to shutdown the instances
       tags = [
         {
           key                 = "k8s.io/cluster-autoscaler/enabled"
