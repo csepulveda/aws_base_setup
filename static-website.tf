@@ -1,5 +1,5 @@
 module "aws_static_website" {
-  source = "cloudmaniac/static-website/aws"
+  source = "git@github.com:csepulveda/terraform-aws-static-website.git"
 
   website-domain-main     = "csepulveda.io"
   website-domain-redirect = "blog.csepulveda.io"

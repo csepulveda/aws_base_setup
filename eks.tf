@@ -15,7 +15,7 @@ provider "kubernetes" {
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
 
-  cluster_name    = var.cluster_name
+  cluster_name    = var.eks_cluster_name
   cluster_version = "1.20"
   subnets         = module.vpc.private_subnets
   enable_irsa     = true
@@ -34,7 +34,7 @@ module "eks" {
           propagate_at_launch = true
         },
         {
-          key                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          key                 = "k8s.io/cluster-autoscaler/${var.eks_cluster_name}"
           value               = "owned"
           propagate_at_launch = true
         }
