@@ -24,7 +24,7 @@ module "eks" {
 
   worker_groups = [
     {
-      instance_type = "t3.medium"
+      instance_type = "t3a.nano"
       asg_max_size  = 10 #this must be 10, but now its 0 to shutdown the instances
       asg_min_size  = 1  #this must be 1, but now its 0 to shutdown the instances
       tags = [
